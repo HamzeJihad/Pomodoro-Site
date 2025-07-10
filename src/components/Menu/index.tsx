@@ -1,10 +1,15 @@
-import { HistoryIcon, HouseIcon, MoonIcon, SettingsIcon, SunIcon } from 'lucide-react';
+import {
+  HistoryIcon,
+  HouseIcon,
+  MoonIcon,
+  SettingsIcon,
+  SunIcon,
+} from 'lucide-react';
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';
 import { RouterLink } from '../RouterLink';
 
 type AvailableThemes = 'dark' | 'light';
-
 
 export function Menu() {
   const [theme, setTheme] = useState<AvailableThemes>(() => {
@@ -14,12 +19,12 @@ export function Menu() {
 
   const nextThemeIcon = {
     dark: <SunIcon />,
-    light: <MoonIcon/>
+    light: <MoonIcon />,
   };
 
   function toggleTheme(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
     event.preventDefault();
-    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+    setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark'));
   }
 
   useEffect(() => {

@@ -11,7 +11,17 @@ export function TaskContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = useReducer(taskReducer, initialTaskState);
+  const [state, dispatch] = useReducer(taskReducer, initialTaskState, () => {
+    const savedState = localStorage.getItem('state');
+    if (savedState === null) return initialTaskState;
+    const parsedState = savedState ? JSON.parse(savedState) : null;
+    return {
+      ...parsedState,
+      activeTask: null,
+      secondsRemaining: 0,
+      formattedSecondsRemaining: '00:00',
+    };
+  });
 
   let playBeepRef = useRef<() => void | null>(null);
 
@@ -20,7 +30,6 @@ export function TaskContextProvider({
   worker.onmessage(e => {
     const secondsRemaining = e.data;
 
-    
     if (secondsRemaining <= 0) {
       playBeepRef.current?.();
       playBeepRef.current = null;
@@ -34,19 +43,21 @@ export function TaskContextProvider({
       });
     }
   });
-123
+  123;
   useEffect(() => {
+    localStorage.setItem('state', JSON.stringify(state));
+
     if (!state.activeTask) {
       worker.terminate();
     }
 
-    document.title = `${state.activeTask ? state.activeTask.name : 'Chronos Pomodoro'}`;
+    document.title = `${
+      state.activeTask ? state.activeTask.name : 'Chronos Pomodoro'
+    }`;
     worker.postMessage(state);
   }, [worker, state]);
 
-
   useEffect(() => {
-
     if (state.activeTask && playBeepRef.current === null) {
       playBeepRef.current = loadBeep();
     } else {
