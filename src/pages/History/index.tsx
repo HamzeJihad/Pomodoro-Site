@@ -14,7 +14,6 @@ import { showMessage } from '../../adapters/showMessage';
 
 export function History() {
   const { state, dispatch } = useTaskContext();
-  const [confirmClearHistory, setConfirmClearHistory] = useState(false);
 
   const hasTasks = state.tasks.length > 0;
   const [sortedTasksOptions, setSortTasksOptions] = useState<SortTasksOptions>(
@@ -40,21 +39,14 @@ export function History() {
       field,
     });
   }
-
   function handleResetHistory() {
     showMessage.dismiss();
     showMessage.confirm('Tem certeza?', confirmation => {
-      setConfirmClearHistory(confirmation);
+      if (confirmation) {
+        dispatch({ type: TaskActionTypes.RESET_STATE });
+      }
     });
   }
-
-  useEffect(() => {
-    if (!confirmClearHistory) return;
-
-    setConfirmClearHistory(false);
-
-    dispatch({ type: TaskActionTypes.RESET_STATE });
-  }, [confirmClearHistory, dispatch]);
 
   useEffect(() => {
     setSortTasksOptions(prevState => ({
@@ -68,10 +60,11 @@ export function History() {
   }, [state.tasks]);
 
   useEffect(() => {
-      return () => {
-        showMessage.dismiss();
-      }
-  });
+    document.title = 'Histórico';
+    return () => {
+      showMessage.dismiss();
+    };
+  }, []);
   return (
     <MainTemplate>
       <Container>

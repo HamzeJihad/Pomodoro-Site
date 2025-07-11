@@ -64,6 +64,10 @@ export function taskReducer(state: TaskStateModel, action: TaskActionModel) {
       };
     }
 
+    case TaskActionTypes.UPDATE_CONFIG: {
+      return {...state, config: action.payload};
+    }
+
     default:
       return state;
   }

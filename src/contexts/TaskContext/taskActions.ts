@@ -1,4 +1,5 @@
 import type { TaskModel } from '../../models/TaskModels';
+import type { TaskStateModel } from '../../models/TaskStateModel';
 
 export enum TaskActionTypes {
   START_TASK = 'START_TASK',
@@ -29,4 +30,10 @@ export type TaskActionModel =
     }
   | {
       type: TaskActionTypes.COMPLETE_TASK;
-    };
+    }
+
+  | {
+      type: TaskActionTypes.UPDATE_CONFIG;
+      payload: TaskStateModel['config'];
+    
+  }  
