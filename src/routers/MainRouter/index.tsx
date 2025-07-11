@@ -4,6 +4,7 @@ import { AboutPomodoro } from '../../pages/AboutPomodoro';
 import { Home } from '../../pages/Home';
 import { useEffect } from 'react';
 import { History } from '../../pages/History';
+import { Settings } from '../../pages/Settings';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,6 +29,10 @@ export function MainRouter() {
           element={<AboutPomodoro></AboutPomodoro>}
         ></Route>
         
+        <Route
+          path='/settings'
+          element={<Settings></Settings>}
+        ></Route>
         <Route path='*' element={<NotFound></NotFound>}></Route>
       </Routes>
       <ScrollToTop></ScrollToTop>
